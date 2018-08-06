@@ -1,0 +1,28 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: subflow-comet
+  namespace: sdsu-comet
+spec:
+  replicas: 4
+  template:
+    metadata:
+      labels:
+        k8s-app: subflow-comet
+    spec:
+      containers:
+      - name: subflow
+        image: dimm0/subflow:latest
+        imagePullPolicy: IfNotPresent
+        args: ["sleep", "infinity"]
+        resources:
+          limits:
+            memory: "64Gi"
+        volumeMounts:
+        - name: nfs
+          mountPath: /nfs
+      volumes:
+      - name: nfs
+        nfs:
+          server: 10.109.158.238
+          path: "/"

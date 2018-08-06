@@ -1,0 +1,28 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: subflow
+  namespace: sdsu
+spec:
+  replicas: 8
+  template:
+    metadata:
+      labels:
+        k8s-app: subflow
+    spec:
+      containers:
+      - name: subflow
+        image: phusion/baseimage:0.9.19
+        imagePullPolicy: IfNotPresent
+        args: ["sleep", "infinity"]
+        resources:
+          limits:
+            memory: "48Gi"
+        volumeMounts:
+        - name: nfs
+          mountPath: /nfs
+      volumes:
+      - name: nfs
+        nfs:
+          server: 10.109.158.238
+          path: "/"
